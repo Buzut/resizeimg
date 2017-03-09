@@ -19,7 +19,7 @@ Modern browsers have everything needed to resize images. That works in three ste
 ### Bower
 
 ```
-bower install compress-image
+bower install resizeimage
 ```
 
 ### Manual
