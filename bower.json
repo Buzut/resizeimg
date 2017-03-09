@@ -1,0 +1,21 @@
+{
+  "name": "resize-image",
+  "main": "resize-image.js",
+  "authors": [
+    "Buzut <blog@buzut.fr>"
+  ],
+  "description": "Resize image allows to efficiently resize images in the browser prior to upload thanks to HTML5 canvas",
+  "keywords": [
+    "html5",
+    "image",
+    "resize",
+    "resample",
+    "compress"
+  ],
+  "license": "BSD-2-Clause",
+  "moduleType": "globals",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Buzut/resize-image.git"
+  }
+}
