@@ -42,7 +42,7 @@ const inputFile = document.getElementById('upload-image');
 inputFile.onchange = function(event) {
    const img = inputFile.files[0];
 
-	resizeImage(file, { outputFormat: 'jpeg', targetWidth: 200, targetHeight: 100 }, (err, b64img) => {
+	resizeImage(img, { outputFormat: 'jpeg', targetWidth: 200, targetHeight: 100 }, (err, b64img) => {
     	if (err) {
     	    console.error(err);
     	    return;
