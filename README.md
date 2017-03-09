@@ -72,6 +72,6 @@ The options object takes several arguments:
 
     
 
-## ES6 comatibility without a build pipeline
+## ES6 compatibility without a build pipeline
 
 The module is written is ES2015. If you want it compatible with (moderately) older browsers and don't have a build process, you'll have to [transpile it to ES5](https://es6console.com/). While you're at it, don't forget to uglify it for better delivery.
