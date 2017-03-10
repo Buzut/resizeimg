@@ -30,12 +30,71 @@ window.resizeImage = (() => {
     }
 
     /**
+     * Compute image new size and crop info (if any)
+     * @param {object} imgObj – HTMLImageElement
+     * @param {string} targetWidth
+     * @param {string} targetHeight
+     * @param {bool} crop
+     * @param {bool} forceRatio
+     * @callback – object containing image size and cropping info
+     */
+    function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, callback) {
+        const imgWidth = imgObj.width;
+        const imgHeight = imgObj.height;
+
+        if (crop) {
+            smartcrop.crop(imgObj, { width: targetWidth, height: targetHeight }).then((cropInfos) => {
+                callback({
+                    srcX: cropInfos.topCrop.x,
+                    srcY: cropInfos.topCrop.y,
+                    srcWidth: cropInfos.topCrop.width,
+                    srcHeight: cropInfos.topCrop.height,
+                    dstWidth: targetWidth,
+                    dstHeight: targetHeight
+                });
+            });
+        }
+
+        else {
+            let newWidth;
+            let newHeight;
+
+            if (forceRatio) {
+                newWidth = targetWidth;
+                newHeight = targetHeight;
+            }
+
+            else {
+                if (imgWidth > imgHeight) {
+                    newWidth = targetWidth;
+                    newHeight = Math.round((imgHeight / imgWidth) * width);
+                }
+
+                else {
+                    newHeight = targetHeight;
+                    newWidth = Math.round((imgWidth / imgHeight) * height);
+                }
+            }
+
+            callback({
+                srcX: 0,
+                srcY: 0,
+                srcWidth: imgWidth,
+                srcHeight: imgHeight,
+                dstWidth: newWidth,
+                dstHeight: newHeight
+            });
+        }
+    }
+
+    /**
      * Resize an image, preserving (or not), its aspect ratio
      * @param {object} file – file object from input file
      * @param {object} options - this object requires the following options:
      *  {string} outputFormat – (jpe?g or png)
      *  {string} targetWidth
      *  {string} targetHeight
+     *  {bool} crop – if true, will (smartly) crop image to fit given dimensions (optional)
      *  {bool} forceRatio – if true, force dimensions without regard to the aspect ratio (optional)
      * @callback – err, b64img (the image is returned as a base64 dataUrl string)
      */
@@ -54,34 +113,17 @@ window.resizeImage = (() => {
 
         convertFileToB64(img, (b64img) => {
             getImage(b64img, (imgObj) => {
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                const imgWidth = imgObj.width;
-                const imgHeight = imgObj.height;
-                let width;
-                let height;
+                const crop = (options.crop) ? true : false;
+                const forceRatio = (options.forceRatio) ? true : false;
 
-                if (!options.forceRatio) {
-                    if (imgWidth > imgHeight) {
-                        width = options.targetWidth;
-                        height = Math.round((imgHeight / imgWidth) * width);
-                    }
-
-                    else {
-                        height = options.targetHeight;
-                        width = Math.round((imgWidth / imgHeight) * height);
-                    }
-                }
-
-                else {
-                    width = options.targetWidth;
-                    height = options.targetHeight;
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(imgObj, 0, 0, width, height);
-                callback(null, canvas.toDataURL(`image/${output}`));
+                computeNewSize(imgObj, options.targetWidth, options.targetHeight, crop, forceRatio, (newSize) => {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = newSize.dstWidth;
+                    canvas.height = newSize.dstHeight;
+                    context.drawImage(imgObj, newSize.srcX, newSize.srcY, newSize.srcWidth, newSize.srcHeight, 0, 0, newSize.dstWidth, newSize.dstHeight);
+                    callback(null, canvas.toDataURL(`image/${output}`));
+                });
             });
         });
     }
