@@ -1,17 +1,8 @@
 # resize-image
 
-Resize image allows to efficiently resize images in the browser prior to upload thanks to HTML5 canvas.
+Resize image allows to efficiently resize and/or crop images in the browser prior to upload thanks to HTML5 canvas. Cropping is automatically adjusted in a smart way thanks to [smartcrop](https://github.com/jwagner/smartcrop.js).
 
-This module allows to resize files, thus making them smaller. Why wait for the file to be on the server before compressing it?
-
-## How does it work?
-
-Modern browsers have everything needed to resize images. That works in three steps:
-
-1. take an image object (from input file) as input param
-2. convert it into base64 dataUrl
-3. "print" that image on a canvas of desired size (canvas isn't inserted in the DOM at all)
-4. return the new image as base64 dataUrl
+_Why waste time on network transfer when you can compress in the browser?_
 
 
 ## Installation
@@ -42,7 +33,7 @@ const inputFile = document.getElementById('upload-image');
 inputFile.onchange = function(event) {
    const img = inputFile.files[0];
 
-	resizeImage(img, { outputFormat: 'jpeg', targetWidth: 200, targetHeight: 100 }, (err, b64img) => {
+	resizeImage(img, { outputFormat: 'jpeg', targetWidth: 200, targetHeight: 200, crop: true }, (err, b64img) => {
     	if (err) {
     	    console.error(err);
     	    return;
@@ -57,20 +48,20 @@ inputFile.onchange = function(event) {
 
 The function takes three arguments:
 
-- the image as a file object from input file
-- options object
-- callback
+- `img` – the image as a file object from input file
+- `options` object
+  - {string} `outputFormat` – (jpe?g or png)
+  - {string} `targetWidth`
+  - {string} `targetHeight`
+  - {bool} `crop` – if true, (smartly) crop image to the desired dimensions (optional)
+  - {bool} `forceRatio` – if true, force dimensions without regard to the aspect ratio (optional)
+- `callback`
 
-The options object takes several arguments:
-
-- {string} outputFormat – (jpe?g or png)
-- {string} targetWidth
-- {string} targetHeight
-- {bool} forceRatio – if true, force dimensions without regard to the aspect ratio (optional)
+__Note that `crop` and `forceRatio` are mutually exclusive__
 
 
 
-    
+
 
 ## ES6 compatibility without a build pipeline
 

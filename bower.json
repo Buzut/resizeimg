@@ -2,9 +2,12 @@
   "name": "resize-image",
   "main": "resize-image.js",
   "authors": [
-    "Buzut <blog@buzut.fr>"
+    { "name": "Buzut", "email": "blog@buzut.fr", "homepage": "https://buzut.fr" }
   ],
   "description": "Resize image allows to efficiently resize images in the browser prior to upload thanks to HTML5 canvas",
+  "dependencies": {
+    "smartcrop": "^1.1.1"
+  },
   "keywords": [
     "html5",
     "image",
