@@ -42,10 +42,12 @@ window.resizeImage = (() => {
     function resize(img, options, callback) {
         if (!/(jpe?g|png)$/i.test(img.type)) {
             callback(new TypeError('image must be either jpeg or png'));
+            return;
         }
 
         if (options.outputFormat !== 'jpg' && options.outputFormat !== 'jpeg' && options.outputFormat !== 'png') {
             callback(new Error('outputFormat must be either jpe?g or png'));
+            return;
         }
 
         const output = (options.outputFormat === 'png') ? 'png' : 'jpeg';
