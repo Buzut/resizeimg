@@ -1,24 +1,23 @@
 # resize-image
 
-Resize image allows to efficiently resize and/or crop images in the browser prior to upload thanks to HTML5 canvas. Cropping is automatically adjusted in a smart way thanks to [smartcrop](https://github.com/jwagner/smartcrop.js).
+Efficiently resize and/or crop images in browser thanks to HTML5 canvas. Cropping is automatically adjusted in a smart way thanks to [smartcrop](https://github.com/jwagner/smartcrop.js).
 
 _Why waste time on network transfer when you can compress in the browser?_
 
 
 ## Installation & usage
 
-
 ```
-npm install resizeimage
+npm install resizeimg
 ```
 
 
 ```js
 // require using commonJS
-const resizeImage = require('resizeimage');
+const resizeImage = require('resizeimg');
 
 // or in es6, using a module bundler like rollup or webpack
-import resizeImage from 'resizeimage';
+import resizeImage from 'resize-image';
 
 // get your input file (it has id="upload-image")
 const inputFile = document.getElementById('upload-image');

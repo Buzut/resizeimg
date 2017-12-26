@@ -1,7 +1,7 @@
 {
   "name": "resize-image",
   "version": "2.0.0",
-  "description": "Resize image allows to efficiently resize images in the browser prior to upload thanks to HTML5 canvas",
+  "description": "Efficiently resize images in the browser with smart crop and aspect/ratio capabilities",
   "main": "lib/index.js",
   "module": "src/index.js",
   "files": [
@@ -13,11 +13,15 @@
     "url": "https://github.com/Buzut/resize-image.git"
   },
   "keywords": [
+    "bmp",
     "compress",
     "crop",
+    "fast",
     "html5",
     "image",
-    "in memory",
+    "memory",
+    "optimization",
+    "png",
     "resize",
     "resample"
   ],
