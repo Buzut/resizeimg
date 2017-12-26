@@ -1,5 +1,5 @@
 {
-  "name": "resize-image",
+  "name": "smart-img-resize",
   "version": "2.0.0",
   "description": "Efficiently resize images in the browser with smart crop and aspect/ratio capabilities",
   "main": "lib/index.js",
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Buzut/resize-image.git"
+    "url": "https://github.com/Buzut/resizeimg.git"
   },
   "keywords": [
     "bmp",
@@ -28,7 +28,7 @@
   "author": "Buzut (buzut.fr)",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/Buzut/resize-image/issues"
+    "url": "https://github.com/Buzut/resizeimg/issues"
   },
   "devDependencies": {
     "eslint": "^4.14.0",

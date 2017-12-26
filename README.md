@@ -14,10 +14,10 @@ npm install resizeimg
 
 ```js
 // require using commonJS
-const resizeImage = require('resizeimg');
+const resizeImage = require('smart-img-resize');
 
 // or in es6, using a module bundler like rollup or webpack
-import resizeImage from 'resize-image';
+import resizeImage from 'smart-img-resize';
 
 // get your input file (it has id="upload-image")
 const inputFile = document.getElementById('upload-image');
