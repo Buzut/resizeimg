@@ -5,27 +5,21 @@ Resize image allows to efficiently resize and/or crop images in the browser prio
 _Why waste time on network transfer when you can compress in the browser?_
 
 
-## Installation
+## Installation & usage
 
-### Bower
 
 ```
-bower install resizeimage
+npm install resizeimage
 ```
 
-### Manual
-
-Download the archive and extract it. Then just link `resize-image.js` in your `<head>`:
-
-    <script src="resize-image.js"></script>
-
-## Can I haz the code?
-
-__Yes sir!__
-
-_You'll notice that this is ES6 code (so is the module, more details below), treat with caution._
 
 ```js
+// require using commonJS
+const resizeImage = require('resizeimage');
+
+// or in es6, using a module bundler like rollup or webpack
+import resizeImage from 'resizeimage';
+
 // get your input file (it has id="upload-image")
 const inputFile = document.getElementById('upload-image');
 
@@ -59,7 +53,7 @@ The function takes three arguments:
 
 __Note that `crop` and `forceRatio` are mutually exclusive__
 
+## Contributing
 
-## ES6 compatibility without a build pipeline
-
-The module is written is ES2015. If you want it compatible with (moderately) older browsers and don't have a build process, you'll have to [transpile it to ES5](https://es6console.com/). While you're at it, don't forget to uglify it for better delivery.
+There's sure room for improvement, so feel free to hack around and submit PRs!
+Please just follow the style of the existing code, which is [Airbnb's style](http://airbnb.io/javascript/) with [minor modifications](.eslintrc).

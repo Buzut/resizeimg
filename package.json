@@ -1,0 +1,42 @@
+{
+  "name": "resize-image",
+  "version": "2.0.0",
+  "description": "Resize image allows to efficiently resize images in the browser prior to upload thanks to HTML5 canvas",
+  "main": "lib/index.js",
+  "module": "src/index.js",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Buzut/resize-image.git"
+  },
+  "keywords": [
+    "compress",
+    "crop",
+    "html5",
+    "image",
+    "in memory",
+    "resize",
+    "resample"
+  ],
+  "author": "Buzut (buzut.fr)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/Buzut/resize-image/issues"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "rollup": "^0.53.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {
+    "smartcrop": "^1.1.1"
+  }
+}
