@@ -8,7 +8,7 @@ _Why waste time on network transfer when you can compress in the browser?_
 ## Installation & usage
 
 ```
-npm install resizeimg
+npm install smart-img-resize
 ```
 
 
