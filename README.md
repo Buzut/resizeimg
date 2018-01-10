@@ -23,18 +23,23 @@ import resizeImage from 'smart-img-resize';
 const inputFile = document.getElementById('upload-image');
 
 // get the actual file object from your input field as soon as a file is selected
-inputFile.onchange = function(event) {
+inputFile.onchange = function () {
     const img = inputFile.files[0];
 
-    resizeImage(img, { outputFormat: 'jpeg', targetWidth: 200, targetHeight: 200, crop: true }, (err, b64img) => {
+    resizeImage(img, {
+        outputFormat: 'jpeg',
+        targetWidth: 200,
+        targetHeight: 200,
+        crop: true
+    }, (err, b64img) => {
         if (err) {
-    	    console.error(err);
-    	    return;
+            console.error(err);
+            return;
         }
 
-    	// do what you have to with the b64img
+        // do what you have to with the b64img
     });
-});
+};
 ```
 
 ### Parameters
