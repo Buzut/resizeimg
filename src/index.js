@@ -1,4 +1,4 @@
-const smartcrop = require('smartcrop');
+import smartcrop from 'smartcrop';
 
 /**
  * Take file object from input file and convert it to base64
