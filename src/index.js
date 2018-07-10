@@ -1,9 +1,59 @@
 import smartcrop from 'smartcrop';
 
 /**
+ * Read EXIF orentation from JPEG file
+ * attribution https://stackoverflow.com/questions/7584794/
+ * @param { Object } file
+ * @return { Promise }
+ */
+function getOrientation(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            const view = new DataView(reader.result);
+            if (view.getUint16(0, false) !== 0xFFD8) {
+                return resolve(-2);
+            }
+
+            const length = view.byteLength;
+            let offset = 2;
+
+            while (offset < length) {
+                if (view.getUint16(offset + 2, false) <= 8) return resolve(-1);
+
+                const marker = view.getUint16(offset, false);
+                offset += 2;
+
+                if (marker === 0xFFE1) {
+                    if (view.getUint32(offset += 2, false) !== 0x45786966) return resolve(-1); // eslint-disable-line
+
+                    const little = view.getUint16(offset += 6, false) === 0x4949;
+                    offset += view.getUint32(offset + 4, little);
+                    const tags = view.getUint16(offset, little);
+                    offset += 2;
+                    for (let i = 0; i < tags; i++) {
+                        if (view.getUint16(offset + (i * 12), little) === 0x0112) {
+                            return resolve(view.getUint16(offset + (i * 12) + 8, little));
+                        }
+                    }
+                }
+
+                else if ((marker & 0xFF00) !== 0xFF00) break; // eslint-disable-line
+                else offset += view.getUint16(offset, false);
+            }
+
+            return resolve(-1);
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+/**
  * Take file object from input file and convert it to base64
  * @param {object} file
- * @callback – base64 dataUrl
+ * @param { Function } callback – base64 dataUrl
  */
 function convertFileToB64(file, callback) {
     const reader = new FileReader();
@@ -18,7 +68,7 @@ function convertFileToB64(file, callback) {
 /**
  * Create an HTMLImageElement from b64 string
  * @param {string} b64img
- * @callback – HTMLImageElement
+ * @param { Function } callback – HTMLImageElement
  */
 function getImage(b64img, callback) {
     const imgObj = new Image();
@@ -37,7 +87,7 @@ function getImage(b64img, callback) {
  * @param {string} targetHeight
  * @param {bool} crop
  * @param {bool} forceRatio
- * @callback – object containing image size and cropping info
+ * @param { Function } callback – object containing image size and cropping info
  */
 function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, callback) {
     const imgWidth = imgObj.width;
@@ -54,36 +104,36 @@ function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, cal
                 dstHeight: targetHeight
             });
         });
+
+        return;
+    }
+
+    let newWidth;
+    let newHeight;
+
+    if (forceRatio) {
+        newWidth = targetWidth;
+        newHeight = targetHeight;
+    }
+
+    else if (imgWidth > imgHeight) {
+        newWidth = targetWidth;
+        newHeight = Math.round((imgHeight / imgWidth) * newWidth);
     }
 
     else {
-        let newWidth;
-        let newHeight;
-
-        if (forceRatio) {
-            newWidth = targetWidth;
-            newHeight = targetHeight;
-        }
-
-        else if (imgWidth > imgHeight) {
-            newWidth = targetWidth;
-            newHeight = Math.round((imgHeight / imgWidth) * newWidth);
-        }
-
-        else {
-            newHeight = targetHeight;
-            newWidth = Math.round((imgWidth / imgHeight) * newHeight);
-        }
-
-        callback({
-            srcX: 0,
-            srcY: 0,
-            srcWidth: imgWidth,
-            srcHeight: imgHeight,
-            dstWidth: newWidth,
-            dstHeight: newHeight
-        });
+        newHeight = targetHeight;
+        newWidth = Math.round((imgWidth / imgHeight) * newHeight);
     }
+
+    callback({
+        srcX: 0,
+        srcY: 0,
+        srcWidth: imgWidth,
+        srcHeight: imgHeight,
+        dstWidth: newWidth,
+        dstHeight: newHeight
+    });
 }
 
 /**
@@ -95,7 +145,7 @@ function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, cal
  *  {string} targetHeight
  *  {bool} crop – if true, will (smartly) crop image to fit given dimensions (optional)
  *  {bool} forceRatio – if true, force dimensions without regard to the aspect ratio (optional)
- * @callback – err, b64img (the image is returned as a base64 dataUrl string)
+ * @param { Function } callback – err, b64img (the image is returned as a base64 dataUrl string)
  */
 function resize(img, options, callback) {
     if (!/(jpe?g|png)$/i.test(img.type)) {
@@ -109,6 +159,7 @@ function resize(img, options, callback) {
     }
 
     const output = (options.outputFormat === 'png') ? 'png' : 'jpeg';
+    const orientation = getOrientation(img);
 
     convertFileToB64(img, (b64img) => {
         getImage(b64img, (imgObj) => {
@@ -120,8 +171,32 @@ function resize(img, options, callback) {
                 const context = canvas.getContext('2d');
                 canvas.width = newSize.dstWidth;
                 canvas.height = newSize.dstHeight;
-                context.drawImage(imgObj, newSize.srcX, newSize.srcY, newSize.srcWidth, newSize.srcHeight, 0, 0, newSize.dstWidth, newSize.dstHeight);
-                callback(null, canvas.toDataURL(`image/${output}`));
+
+                orientation.then((exifOrientation) => {
+                    if (exifOrientation > 4) {
+                        canvas.width = newSize.dstHeight;
+                        canvas.height = newSize.dstWidth;
+                    }
+
+                    if (exifOrientation === 3) {
+                        context.rotate(Math.PI);
+                        context.translate(-newSize.dstWidth, -newSize.dstHeight);
+                    }
+
+                    else if (exifOrientation === 6) {
+                        context.rotate(0.5 * Math.PI);
+                        context.translate(0, -newSize.dstHeight);
+                    }
+
+                    else if (exifOrientation === 8) {
+                        context.rotate(-0.5 * Math.PI);
+                        context.translate(-newSize.dstWidth, 0);
+                    }
+
+                    context.drawImage(imgObj, newSize.srcX, newSize.srcY, newSize.srcWidth, newSize.srcHeight, 0, 0, newSize.dstWidth, newSize.dstHeight);
+
+                    callback(null, canvas.toDataURL(`image/${output}`));
+                });
             });
         });
     });
