@@ -52,7 +52,7 @@ function getOrientation(file) {
 
 /**
  * Take file object from input file and convert it to base64
- * @param {object} file
+ * @param { Object } file
  * @param { Function } callback – base64 dataUrl
  */
 function convertFileToB64(file, callback) {
@@ -67,7 +67,7 @@ function convertFileToB64(file, callback) {
 
 /**
  * Create an HTMLImageElement from b64 string
- * @param {string} b64img
+ * @param { String } b64img
  * @param { Function } callback – HTMLImageElement
  */
 function getImage(b64img, callback) {
@@ -82,11 +82,11 @@ function getImage(b64img, callback) {
 
 /**
  * Compute image new size and crop info (if any)
- * @param {object} imgObj – HTMLImageElement
- * @param {string} targetWidth
- * @param {string} targetHeight
- * @param {bool} crop
- * @param {bool} forceRatio
+ * @param { Object } imgObj – HTMLImageElement
+ * @param { String } targetWidth
+ * @param { String } targetHeight
+ * @param { Bool } crop
+ * @param { Bool } forceRatio
  * @param { Function } callback – object containing image size and cropping info
  */
 function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, callback) {
@@ -138,13 +138,13 @@ function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, cal
 
 /**
  * Resize an image, preserving (or not), its aspect ratio
- * @param {object} file – file object from input file
- * @param {object} options - this object requires the following options:
- *  {string} outputFormat – (jpe?g or png)
- *  {string} targetWidth
- *  {string} targetHeight
- *  {bool} crop – if true, will (smartly) crop image to fit given dimensions (optional)
- *  {bool} forceRatio – if true, force dimensions without regard to the aspect ratio (optional)
+ * @param { Object } file – file object from input file
+ * @param { Object } options - this object requires the following options:
+ *  { String } outputFormat – (jpe?g or png)
+ *  { String } targetWidth
+ *  { String } targetHeight
+ *  { Bool } crop – if true, will (smartly) crop image to fit given dimensions (optional)
+ *  { Bool } forceRatio – if true, force dimensions without regard to the aspect ratio (optional)
  * @param { Function } callback – err, b64img (the image is returned as a base64 dataUrl string)
  */
 function resize(img, options, callback) {
