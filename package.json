@@ -1,6 +1,6 @@
 {
   "name": "smart-img-resize",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Efficiently resize images in the browser with smart crop and aspect/ratio capabilities",
   "main": "lib/index.js",
   "module": "src/index.js",
