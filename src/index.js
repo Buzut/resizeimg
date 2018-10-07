@@ -140,7 +140,7 @@ function computeNewSize(imgObj, targetWidth, targetHeight, crop, forceRatio, cal
  * Resize an image, preserving (or not), its aspect ratio
  * @param { Object } file – file object from input file
  * @param { Object } options - this object requires the following options:
- *  { String } outputFormat – (jpe?g or png)
+ *  { String } outputFormat – (jpe?g|png|canvas)
  *  { String } targetWidth
  *  { String } targetHeight
  *  { Bool } crop – if true, will (smartly) crop image to fit given dimensions (optional)
@@ -153,8 +153,8 @@ function resize(img, options, callback) {
         return;
     }
 
-    if (options.outputFormat !== 'jpg' && options.outputFormat !== 'jpeg' && options.outputFormat !== 'png') {
-        callback(new Error('outputFormat must be either jpe?g or png'));
+    if (!/^(jpe?g|png|canvas)$/.test(options.outputFormat)) {
+        callback(new Error('outputFormat must be either (jpe?g|png|canvas)'));
         return;
     }
 
@@ -195,7 +195,7 @@ function resize(img, options, callback) {
 
                     context.drawImage(imgObj, newSize.srcX, newSize.srcY, newSize.srcWidth, newSize.srcHeight, 0, 0, newSize.dstWidth, newSize.dstHeight);
 
-                    callback(null, canvas.toDataURL(`image/${output}`));
+                    callback(null, options.outputFormat === 'canvas' ? canvas : canvas.toDataURL(`image/${output}`));
                 });
             });
         });
