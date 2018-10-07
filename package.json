@@ -31,14 +31,14 @@
     "url": "https://github.com/Buzut/resizeimg/issues"
   },
   "devDependencies": {
-    "eslint": "^4.14.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.14.0",
     "rollup": "^0.53.0"
   },
   "scripts": {
     "build": "rollup -c",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "smartcrop": "^1.1.1"
