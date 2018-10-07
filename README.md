@@ -48,7 +48,7 @@ The function takes three arguments:
 
 - `img` – the image as a file object from input file
 - `options` object
-  - {string} `outputFormat` – (jpe?g or png)
+  - {string} `outputFormat` – (jpe?g|png|canvas), canvas => canvas element, others => dataURI
   - {string} `targetWidth`
   - {string} `targetHeight`
   - {bool} `crop` – if true, (smartly) crop image to the desired dimensions (optional)
