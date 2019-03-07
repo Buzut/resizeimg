@@ -37,6 +37,7 @@
     "rollup": "^0.53.0"
   },
   "scripts": {
+    "prepare": "test -d .git && cd .git/hooks/ && curl -O https://raw.githubusercontent.com/Buzut/git-emojis-hook/master/commit-msg && curl -O https://raw.githubusercontent.com/Buzut/git-emojis-hook/master/prepare-commit-msg && chmod +x *",
     "build": "rollup -c",
     "prepublishOnly": "npm run build"
   },
