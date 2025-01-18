@@ -34,7 +34,7 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "rollup": "^0.53.0"
+    "rollup": "^2.79.2"
   },
   "scripts": {
     "prepare": "test -d .git && cd .git/hooks/ && curl -O https://raw.githubusercontent.com/Buzut/git-emojis-hook/master/commit-msg && curl -O https://raw.githubusercontent.com/Buzut/git-emojis-hook/master/prepare-commit-msg && chmod +x * || exit 0",
